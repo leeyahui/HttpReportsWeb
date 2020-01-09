@@ -10,3 +10,6 @@
 /HttpReportsWeb/bin
 /HttpReportsWeb/obj
 /HttpReportsWeb/Properties
+/HttpReports.Web.NetFrame/bin
+/HttpReports.Web.NetFrame/obj/Debug
+/packages
