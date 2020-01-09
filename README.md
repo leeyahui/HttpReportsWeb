@@ -48,7 +48,7 @@ Nuget 包安装 HttpReports, 打开Startup.cs, 修改 ConfigureServices(IService
 	 public void ConfigureServices(IServiceCollection services)
 	 { 
 		 // 添加HttpReports中间件
-		 services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer);
+		 services.AddHttpReportsMiddleware(WebType.API, DBType.SqlServer);
 
 	     services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2); 
 	}
@@ -59,11 +59,11 @@ Nuget 包安装 HttpReports, 打开Startup.cs, 修改 ConfigureServices(IService
  
 ###### 授权API应用(Auth)
  ```csharp
-services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer,"Auth");
+services.AddHttpReportsMiddleware(WebType.API, DBType.SqlServer,"Auth");
 ```
 ###### 支付Pay应用(Pay)
  ```csharp
-services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer,"Pay");  
+services.AddHttpReportsMiddleware(WebType.API, DBType.SqlServer,"Pay");  
 ```
 
 😆 **单个MVC应用** 
@@ -72,7 +72,7 @@ services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer,"Pay");
 	public void ConfigureServices(IServiceCollection services)
 	{ 
 		// 添加HttpReports中间件
-		services.AddHttpReportsMiddlewire(WebType.MVC, DBType.SqlServer);
+		services.AddHttpReportsMiddleware(WebType.MVC, DBType.SqlServer);
 
 		services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2); 
 	}
@@ -84,21 +84,21 @@ services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer,"Pay");
 
 ###### 电商MVC应用 （Mall）
  ```csharp
- services.AddHttpReportsMiddlewire(WebType.MVC, DBType.SqlServer,"Mall");
+ services.AddHttpReportsMiddleware(WebType.MVC, DBType.SqlServer,"Mall");
 ```
 ###### 支付MVC应用 （Pay）
  ```csharp
- services.AddHttpReportsMiddlewire(WebType.MVC, DBType.SqlServer,"Pay");  
+ services.AddHttpReportsMiddleware(WebType.MVC, DBType.SqlServer,"Pay");  
 ```
 😆 **切换数据库**
 
 使用MySql数据库
 ```csharp
- services.AddHttpReportsMiddlewire(WebType.API, DBType.MySql);
+ services.AddHttpReportsMiddleware(WebType.API, DBType.MySql);
 ```
 使用SqlServer数据库
 ```csharp
- services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer);
+ services.AddHttpReportsMiddleware(WebType.API, DBType.SqlServer);
 ``` 
    
 ##### 2.使用 HttpReports 中间件  
@@ -111,7 +111,7 @@ services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer,"Pay");
 	public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 	{    
 		//使用HttpReports 
-		app.UseHttpReportsMiddlewire();  
+		app.UseHttpReportsMiddleware();  
 
 		app.UseMvc();
 	}
@@ -124,7 +124,7 @@ services.AddHttpReportsMiddlewire(WebType.API, DBType.SqlServer,"Pay");
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 	{ 
 		//使用HttpReports
-		app.UseHttpReportsMiddlewire();
+		app.UseHttpReportsMiddleware();
 
 		app.UseRouting(); 
 
@@ -284,11 +284,15 @@ https://github.com/SpringLeee/HttpReports
 
 [MIT](https://github.com/SpringLeee/HttpReports/blob/master/LICENSE "MIT")
 
+### 维护和更新
+ 
+  [ToDoList](https://github.com/SpringLeee/HttpReports/blob/master/ToDoList.md "ToDoList")
+
 ### 交流反馈
  
- 如果您在项目中使用了HttpReports，欢迎添加QQ群, 有想法 有建议，有bug 都欢迎大家来沟通， 也可以添加我的微信，希望可以帮助到您
+如果您在项目中使用了HttpReports，或者感兴趣的可以加入QQ群，大家一起沟通，有更新也会第一时间通知，也可以添加我的微信，希望可以帮助到您
  
- ![](https://images.cnblogs.com/cnblogs_com/myshowtime/1627540/o_a15.png) 
+ ![](https://images.cnblogs.com/cnblogs_com/myshowtime/1627540/o_a15.png)
  
  
 

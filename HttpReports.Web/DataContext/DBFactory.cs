@@ -57,14 +57,14 @@ namespace HttpReports.Web.DataContext
         {
             using (SqlConnection con = new SqlConnection(Constr))
             {
-                string TempConstr = Constr.Replace("httpreports", "master");
+                //string TempConstr = Constr.Replace("httpreports", "master");
 
-                string DB_id = con.QueryFirstOrDefault<string>(" SELECT DB_ID('HttpReports') ");
+                //string DB_id = con.QueryFirstOrDefault<string>(" SELECT DB_ID('HttpReports') ");
 
-                if (string.IsNullOrEmpty(DB_id))
-                {
-                    int i = con.Execute(" Create Database HttpReports ");
-                }
+                //if (string.IsNullOrEmpty(DB_id))
+                //{
+                //    int i = con.Execute(" Create Database HttpReports ");
+                //}
 
 
                 // 检查RequestInfo表
@@ -153,7 +153,7 @@ namespace HttpReports.Web.DataContext
                 }
 
                 TempConn.Close();
-                TempConn.Dispose();
+                TempConn.Dispose(); 
 
                 if (con.QueryFirstOrDefault<int>("  Select count(1) from information_schema.tables where table_name ='httpreports.requestinfo'; ") == 0)
                 {
