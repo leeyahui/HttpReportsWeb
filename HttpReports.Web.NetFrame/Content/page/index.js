@@ -481,7 +481,7 @@ function GetIndexChartA() {
             global.StatusCodePieOption.legend.data = [];
 
             $.each(result.data.StatusCode, function (i, item) {
-                global.StatusCodePieOption.legend.data.push(item.Name);
+                global.StatusCodePieOption.legend.data.push(item.name);
             });
 
             global.StatusCodePie.setOption(global.StatusCodePieOption);
@@ -495,7 +495,7 @@ function GetIndexChartA() {
             global.ResponseTimePieOption.legend.data = [];
 
             $.each(result.data.ResponseTime, function (i, item) {
-                global.ResponseTimePieOption.legend.data.push(item.Name);
+                global.ResponseTimePieOption.legend.data.push(item.name);
             });
 
             global.ResponseTimePie.setOption(global.ResponseTimePieOption);  
@@ -540,8 +540,8 @@ function GetIndexChartA() {
             global.FastARTChartOption.series[0].data = [];
 
             $.each(result.data.Art.fast, function (i, item) {
-                global.FastARTChartOption.yAxis.data.push(item.Name + "    ");
-                global.FastARTChartOption.series[0].data.push(item.Value);
+                global.FastARTChartOption.yAxis.data.push(item.name + "    ");
+                global.FastARTChartOption.series[0].data.push(item.value);
             });
 
             global.FastARTChartOption.yAxis.data.reverse();
@@ -557,8 +557,8 @@ function GetIndexChartA() {
             global.SlowARTChartOption.series[0].data = [];
 
             $.each(result.data.Art.slow, function (i, item) {
-                global.SlowARTChartOption.yAxis.data.push(item.Name + "    ");
-                global.SlowARTChartOption.series[0].data.push(item.Value);
+                global.SlowARTChartOption.yAxis.data.push(item.name + "    ");
+                global.SlowARTChartOption.series[0].data.push(item.value);
             });
 
             global.SlowARTChartOption.yAxis.data.reverse();
@@ -656,7 +656,7 @@ function GetStatusCodePie() {
             global.StatusCodePieOption.legend.data = [];
 
             $.each(result.data, function (i, item) {
-                global.StatusCodePieOption.legend.data.push(item.Name);
+                global.StatusCodePieOption.legend.data.push(item.name);
             });
 
             global.StatusCodePie.setOption(global.StatusCodePieOption);
@@ -744,7 +744,7 @@ function GetBoardData() {
             $(".board-row").busyLoad("hide");
 
             $(".board-row").find("span").eq(0).text(result.data.Total);
-            $(".board-row").find("span").eq(1).text(result.data.Art);
+            $(".board-row").find("span").eq(1).text(result.data.ART);
             $(".board-row").find("span").eq(2).text(result.data.Code404);
             $(".board-row").find("span").eq(3).text(result.data.Code500);
             $(".board-row").find("span").eq(4).text(result.data.ErrorPercent);

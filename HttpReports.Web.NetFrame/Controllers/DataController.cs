@@ -100,12 +100,12 @@ namespace HttpReports.Web.Controllers
             foreach (var item in hours)
             {
                 // 每小时请求次数
-                var timeModel = times.Where(x => Convert.ToInt32(x.Name) == item).FirstOrDefault();
-                timesList.Add(timeModel == null ? 0 : timeModel.Value);
+                var timeModel = times.Where(x => Convert.ToInt32(x.name) == item).FirstOrDefault();
+                timesList.Add(timeModel == null ? 0 : timeModel.value);
 
                 //每小时平均处理时间
-                var avgModel = avg.Where(x => Convert.ToInt32(x.Name) == item).FirstOrDefault();
-                avgList.Add(avgModel == null ? 0 : avgModel.Value);
+                var avgModel = avg.Where(x => Convert.ToInt32(x.name) == item).FirstOrDefault();
+                avgList.Add(avgModel == null ? 0 : avgModel.value);
             }
 
             return Json(new Result(1, "ok", new { timesList, avgList, hours }));
@@ -133,12 +133,12 @@ namespace HttpReports.Web.Controllers
             {
                 DateTime k = request.Start.ToDateTime().AddDays(i);
 
-                var j = list.Where(x => x.Name == k.ToString("yyyy-MM-dd")).FirstOrDefault();
+                var j = list.Where(x => x.name == k.ToString("yyyy-MM-dd")).FirstOrDefault();
 
                 if (j != null)
                 {
                     time.Add(k.ToString("dd"));
-                    value.Add(j.Value);
+                    value.Add(j.value);
                 }
                 else
                 {
@@ -172,12 +172,12 @@ namespace HttpReports.Web.Controllers
             {
                 DateTime k = request.Start.ToDateTime().AddMonths(i);
 
-                var j = list.Where(x => x.Name == k.ToString("yyyy-MM")).FirstOrDefault();
+                var j = list.Where(x => x.name == k.ToString("yyyy-MM")).FirstOrDefault();
 
                 if (j != null)
                 {
                     time.Add(k.ToString("yyyy-MM"));
-                    value.Add(j.Value);
+                    value.Add(j.value);
                 }
                 else
                 {
