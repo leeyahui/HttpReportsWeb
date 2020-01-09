@@ -201,7 +201,7 @@ namespace HttpReports.Web.Controllers
                     start = DateTime.Now.ToString("yyyy-MM-dd"),
                     end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
 
-                }));
+                }), JsonRequestBehavior.AllowGet);
             }
 
             if (Tag == 2)
@@ -212,7 +212,7 @@ namespace HttpReports.Web.Controllers
                     start = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"),
                     end = DateTime.Now.ToString("yyyy-MM-dd")
 
-                }));
+                }), JsonRequestBehavior.AllowGet);
             }
 
             if (Tag == 3)
@@ -223,7 +223,7 @@ namespace HttpReports.Web.Controllers
                     start = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd"),
                     end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
 
-                }));
+                }), JsonRequestBehavior.AllowGet);
             }
 
             if (Tag == 4)
@@ -234,7 +234,7 @@ namespace HttpReports.Web.Controllers
                     start = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd"),
                     end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
 
-                }));
+                }), JsonRequestBehavior.AllowGet);
             }
 
             return Content("");

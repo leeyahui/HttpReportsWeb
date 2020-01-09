@@ -419,8 +419,8 @@ function GetTOPRequestChart() {
             global.MostRequestChartOption.series[0].data = [];
 
             $.each(result.data.most, function (i, item) {
-                global.MostRequestChartOption.yAxis.data.push(item.url + "    ");
-                global.MostRequestChartOption.series[0].data.push(item.total);
+                global.MostRequestChartOption.yAxis.data.push(item.Url + "    ");
+                global.MostRequestChartOption.series[0].data.push(item.Total);
             });
 
             global.MostRequestChartOption.yAxis.data.reverse();
@@ -476,12 +476,12 @@ function GetIndexChartA() {
             //=========================================
             global.StatusCodePie.hideLoading();
 
-            global.StatusCodePieOption.series[0].data = result.data.statusCode;
+            global.StatusCodePieOption.series[0].data = result.data.StatusCode;
 
             global.StatusCodePieOption.legend.data = [];
 
-            $.each(result.data.statusCode, function (i, item) {
-                global.StatusCodePieOption.legend.data.push(item.name);
+            $.each(result.data.StatusCode, function (i, item) {
+                global.StatusCodePieOption.legend.data.push(item.Name);
             });
 
             global.StatusCodePie.setOption(global.StatusCodePieOption);
@@ -490,12 +490,12 @@ function GetIndexChartA() {
             //========================================= 
             global.ResponseTimePie.hideLoading();
 
-            global.ResponseTimePieOption.series[0].data = result.data.responseTime;
+            global.ResponseTimePieOption.series[0].data = result.data.ResponseTime;
 
             global.ResponseTimePieOption.legend.data = [];
 
-            $.each(result.data.responseTime, function (i, item) {
-                global.ResponseTimePieOption.legend.data.push(item.name);
+            $.each(result.data.ResponseTime, function (i, item) {
+                global.ResponseTimePieOption.legend.data.push(item.Name);
             });
 
             global.ResponseTimePie.setOption(global.ResponseTimePieOption);  
@@ -507,9 +507,9 @@ function GetIndexChartA() {
             global.MostRequestChartOption.yAxis.data = [];
             global.MostRequestChartOption.series[0].data = [];
 
-            $.each(result.data.topRequest, function (i, item) {
-                global.MostRequestChartOption.yAxis.data.push(item.url + "    ");
-                global.MostRequestChartOption.series[0].data.push(item.total);
+            $.each(result.data.TopRequest, function (i, item) {
+                global.MostRequestChartOption.yAxis.data.push(item.Url + "    ");
+                global.MostRequestChartOption.series[0].data.push(item.Total);
             });
 
             global.MostRequestChartOption.yAxis.data.reverse();
@@ -523,9 +523,9 @@ function GetIndexChartA() {
             global.Code500RequestChartOption.yAxis.data = [];
             global.Code500RequestChartOption.series[0].data = [];
 
-            $.each(result.data.topError500, function (i, item) {
-                global.Code500RequestChartOption.yAxis.data.push(item.url + "    ");
-                global.Code500RequestChartOption.series[0].data.push(item.total);
+            $.each(result.data.TopError500, function (i, item) {
+                global.Code500RequestChartOption.yAxis.data.push(item.Url + "    ");
+                global.Code500RequestChartOption.series[0].data.push(item.Total);
             });
 
             global.Code500RequestChartOption.yAxis.data.reverse();
@@ -539,9 +539,9 @@ function GetIndexChartA() {
             global.FastARTChartOption.yAxis.data = [];
             global.FastARTChartOption.series[0].data = [];
 
-            $.each(result.data.art.fast, function (i, item) {
-                global.FastARTChartOption.yAxis.data.push(item.name + "    ");
-                global.FastARTChartOption.series[0].data.push(item.value);
+            $.each(result.data.Art.fast, function (i, item) {
+                global.FastARTChartOption.yAxis.data.push(item.Name + "    ");
+                global.FastARTChartOption.series[0].data.push(item.Value);
             });
 
             global.FastARTChartOption.yAxis.data.reverse();
@@ -556,9 +556,9 @@ function GetIndexChartA() {
             global.SlowARTChartOption.yAxis.data = [];
             global.SlowARTChartOption.series[0].data = [];
 
-            $.each(result.data.art.slow, function (i, item) {
-                global.SlowARTChartOption.yAxis.data.push(item.name + "    ");
-                global.SlowARTChartOption.series[0].data.push(item.value);
+            $.each(result.data.Art.slow, function (i, item) {
+                global.SlowARTChartOption.yAxis.data.push(item.Name + "    ");
+                global.SlowARTChartOption.series[0].data.push(item.Value);
             });
 
             global.SlowARTChartOption.yAxis.data.reverse();
@@ -603,8 +603,8 @@ function GetTopCode500Chart() {
             global.Code500RequestChartOption.series[0].data = [];
 
             $.each(result.data, function (i, item) {
-                global.Code500RequestChartOption.yAxis.data.push(item.url + "    ");
-                global.Code500RequestChartOption.series[0].data.push(item.total);
+                global.Code500RequestChartOption.yAxis.data.push(item.Url + "    ");
+                global.Code500RequestChartOption.series[0].data.push(item.Total);
             });
 
             global.Code500RequestChartOption.yAxis.data.reverse();
@@ -656,7 +656,7 @@ function GetStatusCodePie() {
             global.StatusCodePieOption.legend.data = [];
 
             $.each(result.data, function (i, item) {
-                global.StatusCodePieOption.legend.data.push(item.name);
+                global.StatusCodePieOption.legend.data.push(item.Name);
             });
 
             global.StatusCodePie.setOption(global.StatusCodePieOption);
@@ -743,12 +743,12 @@ function GetBoardData() {
 
             $(".board-row").busyLoad("hide");
 
-            $(".board-row").find("span").eq(0).text(result.data.total);
-            $(".board-row").find("span").eq(1).text(result.data.art);
-            $(".board-row").find("span").eq(2).text(result.data.code404);
-            $(".board-row").find("span").eq(3).text(result.data.code500);
-            $(".board-row").find("span").eq(4).text(result.data.errorPercent);
-            $(".board-row").find("span").eq(5).text(result.data.apiCount); 
+            $(".board-row").find("span").eq(0).text(result.data.Total);
+            $(".board-row").find("span").eq(1).text(result.data.Art);
+            $(".board-row").find("span").eq(2).text(result.data.Code404);
+            $(".board-row").find("span").eq(3).text(result.data.Code500);
+            $(".board-row").find("span").eq(4).text(result.data.ErrorPercent);
+            $(".board-row").find("span").eq(5).text(result.data.APICount); 
         }
     });
 }
