@@ -237,7 +237,7 @@ namespace HttpReports.Web.DataAccessors
         {
             string where = BuildTopWhere(request);
 
-            string sql = $" Select  Url,COUNT(1) as Total From RequestInfo {where}  Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}";
+            string sql = $"select * from(Select  Url,COUNT(1) as Total From RequestInfo {where}  Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}) where rownum <={request.TOP}";
 
             return conn.Query<GetTopResponse>(sql).ToList();
         }
@@ -263,8 +263,6 @@ namespace HttpReports.Web.DataAccessors
                 where = where + $" AND CreateTime < to_date('{request.End}','yyyy-MM-dd') ";
             }
 
-            where = where + $" AND ROWNUM <= {request.TOP}";
-
             return where;
         }
 
@@ -272,7 +270,7 @@ namespace HttpReports.Web.DataAccessors
         {
             string where = BuildTopWhere(request);
 
-            string sql = $" Select Url,COUNT(1) as Total From RequestInfo {where} AND StatusCode = 500 Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}";
+            string sql = $"select * from(Select Url,COUNT(1) as Total From RequestInfo {where} AND StatusCode = 500 Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}) where rownum<={request.TOP}";
 
             return conn.Query<GetTopResponse>(sql).ToList();
         }
@@ -287,7 +285,7 @@ namespace HttpReports.Web.DataAccessors
         {
             string where = BuildTopWhere(request);
 
-            string sql = $" Select Url Name ,round(Avg(Milliseconds)) Value From RequestInfo {where} Group By Url order by Value {(request.IsDesc ? "Desc" : "Asc")}";
+            string sql = $"select * from(Select Url Name ,round(Avg(Milliseconds)) Value From RequestInfo {where} Group By Url order by Value {(request.IsDesc ? "Desc" : "Asc")}) where rownum<={request.TOP}";
 
             return conn.Query<EchartPineDataModel>(sql).ToList();
 

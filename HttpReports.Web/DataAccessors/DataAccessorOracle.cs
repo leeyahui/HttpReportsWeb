@@ -13,10 +13,12 @@ namespace HttpReports.Web.DataAccessors
     public class DataAccessorOracle : IDataAccessor
     {
         private OracleConnection conn;
+        private string connectionString;
 
         public DataAccessorOracle(DBFactory factory)
         {
             conn = factory.GeOracleConnection();
+            connectionString = conn.ConnectionString;
         }
 
         public string BuildSqlWhere(GetIndexDataRequest request)
@@ -24,18 +26,18 @@ namespace HttpReports.Web.DataAccessors
             string where = " where 1=1 ";
 
             request.Start = request.Start.IsEmpty() ? $"to_date('{DateTime.Now.ToString("yyyy-MM-dd")}','yyyy-MM-dd')" : request.Start;
-            if (!request.Start.Contains("to_date", StringComparison.OrdinalIgnoreCase))
+            if (!request.Start.Contains("to_date"))
             {
                 request.Start = $"to_date('{request.Start}','yyyy-MM-dd')";
             }
             request.End = request.End.IsEmpty() ? $"to_date('{DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")}','yyyy-MM-dd')" : request.End;
-            if (!request.End.Contains("to_date", StringComparison.OrdinalIgnoreCase))
+            if (!request.End.Contains("to_date"))
             {
                 request.End = $"to_date('{request.End}','yyyy-MM-dd')";
             }
             if (!request.Node.IsEmpty())
             {
-                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+                string nodes = string.Join(",", request.Node.Split(',').ToList().Select(x => "'" + x + "'"));
 
                 where = where + $" AND Node IN ({nodes})";
             }
@@ -123,7 +125,7 @@ namespace HttpReports.Web.DataAccessors
 
             if (!request.Node.IsEmpty())
             {
-                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+                string nodes = string.Join(",", request.Node.Split(',').ToList().Select(x => "'" + x + "'"));
 
                 where = where + $" AND Node IN ({nodes})";
             }
@@ -143,7 +145,7 @@ namespace HttpReports.Web.DataAccessors
 
             if (!request.Node.IsEmpty())
             {
-                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+                string nodes = string.Join(",", request.Node.Split(',').ToList().Select(x => "'" + x + "'"));
 
                 where = where + $" AND Node IN ({nodes})";
             }
@@ -164,7 +166,7 @@ namespace HttpReports.Web.DataAccessors
 
             if (!request.Node.IsEmpty())
             {
-                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+                string nodes = string.Join(",", request.Node.Split(',').ToList().Select(x => "'" + x + "'"));
 
                 where = where + $" AND Node IN ({nodes})";
             }
@@ -189,7 +191,7 @@ namespace HttpReports.Web.DataAccessors
 
             if (!request.Node.IsEmpty())
             {
-                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+                string nodes = string.Join(",", request.Node.Split(',').ToList().Select(x => "'" + x + "'"));
 
                 where = where + $" AND Node IN ({nodes})";
             }
@@ -218,7 +220,7 @@ namespace HttpReports.Web.DataAccessors
             //";
 
             GetIndexDataResponse response = new GetIndexDataResponse();
-            using (var con = new OracleConnection(conn.ConnectionString))
+            using (var con = new OracleConnection(connectionString))
             {
                 response.ART = con.QueryFirst<string>($"Select round(AVG(Milliseconds)) ART From RequestInfo {where}");
                 response.Total = con.QueryFirst<string>($"Select  COUNT(1) Total From RequestInfo {where}");
@@ -235,7 +237,7 @@ namespace HttpReports.Web.DataAccessors
         {
             string where = BuildTopWhere(request);
 
-            string sql = $" Select  Url,COUNT(1) as Total From RequestInfo {where}  Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}";
+            string sql = $"select * from(Select  Url,COUNT(1) as Total From RequestInfo {where}  Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}) where rownum <={request.TOP}";
 
             return conn.Query<GetTopResponse>(sql).ToList();
         }
@@ -246,7 +248,7 @@ namespace HttpReports.Web.DataAccessors
 
             if (!request.Node.IsEmpty())
             {
-                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+                string nodes = string.Join(",", request.Node.Split(',').ToList().Select(x => "'" + x + "'"));
 
                 where = where + $" AND Node IN ({nodes})";
             }
@@ -261,8 +263,6 @@ namespace HttpReports.Web.DataAccessors
                 where = where + $" AND CreateTime < to_date('{request.End}','yyyy-MM-dd') ";
             }
 
-            where = where + $" AND ROWNUM <= {request.TOP}";
-
             return where;
         }
 
@@ -270,7 +270,7 @@ namespace HttpReports.Web.DataAccessors
         {
             string where = BuildTopWhere(request);
 
-            string sql = $" Select Url,COUNT(1) as Total From RequestInfo {where} AND StatusCode = 500 Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}";
+            string sql = $"select * from(Select Url,COUNT(1) as Total From RequestInfo {where} AND StatusCode = 500 Group By Url order by Total {(request.IsDesc ? "Desc" : "Asc")}) where rownum<={request.TOP}";
 
             return conn.Query<GetTopResponse>(sql).ToList();
         }
@@ -285,7 +285,7 @@ namespace HttpReports.Web.DataAccessors
         {
             string where = BuildTopWhere(request);
 
-            string sql = $" Select Url Name ,round(Avg(Milliseconds)) Value From RequestInfo {where} Group By Url order by Value {(request.IsDesc ? "Desc" : "Asc")}";
+            string sql = $"select * from(Select Url Name ,round(Avg(Milliseconds)) Value From RequestInfo {where} Group By Url order by Value {(request.IsDesc ? "Desc" : "Asc")}) where rownum<={request.TOP}";
 
             return conn.Query<EchartPineDataModel>(sql).ToList();
 
@@ -297,7 +297,7 @@ namespace HttpReports.Web.DataAccessors
 
             if (!request.Node.IsEmpty())
             {
-                string nodes = string.Join(",", request.Node.Split(",").ToList().Select(x => "'" + x + "'"));
+                string nodes = string.Join(",", request.Node.Split(',').ToList().Select(x => "'" + x + "'"));
 
                 where = where + $" AND Node IN ({nodes})";
             }
@@ -336,7 +336,7 @@ namespace HttpReports.Web.DataAccessors
 
         public List<Models.Job> GetJobs()
         {
-            using (var con = new OracleConnection(conn.ConnectionString))
+            using (var con = new OracleConnection(connectionString))
             {
                 return con.GetAll<Models.Job>().ToList();
             }
@@ -344,7 +344,7 @@ namespace HttpReports.Web.DataAccessors
 
         public CheckModel CheckRt(Models.Job job, int minute)
         {
-            using (var con = new OracleConnection(conn.ConnectionString))
+            using (var con = new OracleConnection(connectionString))
             {
                 string where = " where 1=1 ";
 
@@ -382,7 +382,7 @@ namespace HttpReports.Web.DataAccessors
 
         public CheckModel CheckHttp(Models.Job job, int minute)
         {
-            using (var con = new OracleConnection(conn.ConnectionString))
+            using (var con = new OracleConnection(connectionString))
             {
 
                 string where = " where 1=1 ";
@@ -422,7 +422,7 @@ namespace HttpReports.Web.DataAccessors
 
         public CheckModel CheckIP(Models.Job job, int minute)
         {
-            using (var con = new OracleConnection(conn.ConnectionString))
+            using (var con = new OracleConnection(connectionString))
             {
                 string where = " where 1=1 ";
 
@@ -460,7 +460,7 @@ namespace HttpReports.Web.DataAccessors
 
         public CheckModel CheckRequestCount(Models.Job job, int minute)
         {
-            using (var con = new OracleConnection(conn.ConnectionString))
+            using (var con = new OracleConnection(connectionString))
             {
                 string where = " where 1=1 ";
 
@@ -504,7 +504,7 @@ namespace HttpReports.Web.DataAccessors
                 return where;
             }
 
-            string nodes = string.Join(",", node.Split(",").ToList().Select(x => "'" + x + "'"));
+            string nodes = string.Join(",", node.Split(',').ToList().Select(x => "'" + x + "'"));
 
             where = where + $" AND Node IN ({nodes})";
 
@@ -520,7 +520,7 @@ namespace HttpReports.Web.DataAccessors
                 return string.Empty;
             }
 
-            string code = string.Join(",", codes.Split(",").ToList().Select(x => x));
+            string code = string.Join(",", codes.Split(',').ToList().Select(x => x));
 
             string where = $" AND StatusCode In ({code})  ";
 
@@ -534,7 +534,7 @@ namespace HttpReports.Web.DataAccessors
                 return string.Empty;
             }
 
-            string ip = string.Join(",", iplist.Split(",").ToList().Select(x => "'" + x + "'"));
+            string ip = string.Join(",", iplist.Split(',').ToList().Select(x => "'" + x + "'"));
 
             string where = $" AND IP Not IN ({ip})";
 
