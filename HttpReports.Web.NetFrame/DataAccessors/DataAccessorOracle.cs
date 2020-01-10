@@ -322,11 +322,9 @@ namespace HttpReports.Web.DataAccessors
                 where = where + $" AND  Url like '%{request.Url}%' ";
             }
 
-            string sql = $"Select * From RequestInfo {where} AND rownum>= {(request.pageNumber - 1) * request.pageSize}and rownum <= {request.pageSize} ";
+            string sql = "Select * From RequestInfo " + where + " order by id desc";
 
-            totalCount = conn.QueryFirstOrDefault<int>(" Select count(1) From RequestInfo " + where);
-
-            return conn.Query<RequestInfo>(sql).ToList();
+            return conn.GetListBySql<RequestInfo>(sql, "id desc", request.pageSize, request.pageNumber, out totalCount, request);
         }
 
         public void AddJob(Models.Job job)

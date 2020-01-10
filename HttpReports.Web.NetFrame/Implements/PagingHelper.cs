@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 
 namespace HttpReports.Web.Implements
 {
@@ -48,6 +44,42 @@ namespace HttpReports.Web.Implements
         }
 
         /// <summary>
+        /// 获取分页SQL语句，默认row_number为关健字，所有表不允许使用该字段名
+        /// </summary>
+        /// <param name="_recordCount">记录总数</param>
+        /// <param name="_pageSize">每页记录数</param>
+        /// <param name="_pageIndex">当前页数</param>
+        /// <param name="_safeSql">SQL查询语句</param>
+        /// <param name="_orderField">排序字段，多个则用“,”隔开</param>
+        /// <returns>分页SQL语句</returns>
+        public static string CreatePagingOracleSql(int _recordCount, int _pageSize, int _pageIndex, string _safeSql, string _orderField)
+        {
+            //计算总页数
+            _pageSize = _pageSize == 0 ? _recordCount : _pageSize;
+            int pageCount = (_recordCount + _pageSize - 1) / _pageSize;
+
+            //检查当前页数
+            if (_pageIndex < 1)
+            {
+                _pageIndex = 1;
+            }
+            else if (_pageIndex > pageCount)
+            {
+                _pageIndex = pageCount;
+            }
+
+            //拼接成最终的SQL语句
+            StringBuilder sbSql = new StringBuilder();
+            sbSql.Append($@"SELECT * FROM  
+(  
+SELECT A.*, ROWNUM RN  
+FROM ({_safeSql}) A  
+)  
+WHERE RN BETWEEN { ((_pageIndex - 1) * _pageSize) + 1} AND { _pageIndex * _pageSize} ");
+            return sbSql.ToString();
+        }
+
+        /// <summary>
         /// 获取记录总数SQL语句
         /// </summary>
         /// <param name="_safeSql">SQL查询语句</param>
@@ -55,6 +87,16 @@ namespace HttpReports.Web.Implements
         public static string CreateCountingSql(string _safeSql, string count_filed = "1")
         {
             return string.Format(" SELECT COUNT(" + count_filed + ") AS RecordCount FROM ({0}) AS T ", _safeSql);
+        }
+
+        /// <summary>
+        /// 获取记录总数SQL语句
+        /// </summary>
+        /// <param name="_safeSql">SQL查询语句</param>
+        /// <returns>记录总数SQL语句</returns>
+        public static string CreateCountingOracleSql(string _safeSql, string count_filed = "1")
+        {
+            return string.Format(" SELECT COUNT(" + count_filed + ") AS RecordCount FROM ({0})", _safeSql);
         }
     }
 }

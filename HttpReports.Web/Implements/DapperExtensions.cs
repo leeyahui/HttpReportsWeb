@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,10 +7,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace HttpReports.Web.Implements
-{ 
+{
     public static class DapperExtensions
     {
 
@@ -145,6 +145,24 @@ namespace HttpReports.Web.Implements
             return con.Query<T>(pagingSql, param).ToList();
         }
 
+        /// <summary>
+        /// Dapper获取分页列表
+        /// </summary>
+        /// <typeparam name="T">获取的列表类型</typeparam>
+        /// <param name="sql">sql语句（不包含orderby以外的部分）</param>
+        /// <param name="orderby">orderby的字段，如果多个可用,分隔，逆序可用desc</param>
+        /// <param name="pagesize">页大小</param>
+        /// <param name="pageindex">当前页</param>
+        /// <param name="totalCount">数据总数</param>
+        /// <returns></returns>
+        public static List<T> GetListBySql<T>(this OracleConnection con, string sql, string orderby, int pagesize, int pageindex, out int totalCount, object param)
+        {
+            var safeSql = GetAntiXssSql(sql);
+            var countSql = PagingHelper.CreateCountingOracleSql(safeSql);
+            totalCount = con.Query<int>(countSql, param).First();
+            var pagingSql = PagingHelper.CreatePagingOracleSql(totalCount, pagesize, pageindex, safeSql, orderby);
+            return con.Query<T>(pagingSql, param).ToList();
+        }
 
 
 
