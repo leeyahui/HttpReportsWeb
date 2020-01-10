@@ -1,5 +1,6 @@
 ﻿using HttpReports.Web.Implements;
 using HttpReports.Web.Models;
+using HttpReports.Web.NetFrame.Implements;
 using HttpReports.Web.Services;
 using System;
 using System.Collections.Generic;
@@ -66,7 +67,7 @@ namespace HttpReports.Web.Controllers
 
             var ResponseTime = _dataService.GetResponseTimePie(request);
 
-            return Json(new Result(1, "ok", new { StatusCode, ResponseTime, TopRequest, TopError500, Art }), JsonRequestBehavior.AllowGet);
+            return new CustomsJsonResult { Data = new Result(1, "ok", new { StatusCode, ResponseTime, TopRequest, TopError500, Art }), JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
 
 
@@ -74,14 +75,14 @@ namespace HttpReports.Web.Controllers
         {
             var data = _dataService.GetStatusCode(request);
 
-            return Json(new Result(1, "ok", data));
+            return new CustomsJsonResult { Data = new Result(1, "ok", data) };
         }
 
         public ActionResult GetResponseTimePie(GetIndexDataRequest request)
         {
             var data = _dataService.GetResponseTimePie(request);
 
-            return Json(new Result(1, "ok", data));
+            return new CustomsJsonResult { Data = new Result(1, "ok", data) };
         }
 
         public ActionResult GetDayStateBar(GetIndexDataRequest request)
@@ -108,7 +109,7 @@ namespace HttpReports.Web.Controllers
                 avgList.Add(avgModel == null ? 0 : avgModel.value);
             }
 
-            return Json(new Result(1, "ok", new { timesList, avgList, hours }));
+            return new CustomsJsonResult(new Result(1, "ok", new { timesList, avgList, hours }));
         }
 
         public ActionResult GetLatelyDayChart(GetIndexDataRequest request)
@@ -147,7 +148,7 @@ namespace HttpReports.Web.Controllers
                 }
             }
 
-            return Json(new Result(1, "ok", new { time, value, Range }));
+            return new CustomsJsonResult(new Result(1, "ok", new { time, value, Range }));
         }
 
 
@@ -186,7 +187,7 @@ namespace HttpReports.Web.Controllers
                 }
             }
 
-            return Json(new Result(1, "ok", new { time, value, Range }));
+            return new CustomsJsonResult(new Result(1, "ok", new { time, value, Range }));
 
         }
 
@@ -195,46 +196,62 @@ namespace HttpReports.Web.Controllers
         {
             if (Tag == 1)
             {
-                return Json(new Result(1, "ok", new
+                return new CustomsJsonResult
                 {
+                    Data = new Result(1, "ok", new
+                    {
 
-                    start = DateTime.Now.ToString("yyyy-MM-dd"),
-                    end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
+                        start = DateTime.Now.ToString("yyyy-MM-dd"),
+                        end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
 
-                }), JsonRequestBehavior.AllowGet);
+                    }),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
 
             if (Tag == 2)
             {
-                return Json(new Result(1, "ok", new
+                return new CustomsJsonResult
                 {
+                    Data = new Result(1, "ok", new
+                    {
 
-                    start = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"),
-                    end = DateTime.Now.ToString("yyyy-MM-dd")
+                        start = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd"),
+                        end = DateTime.Now.ToString("yyyy-MM-dd")
 
-                }), JsonRequestBehavior.AllowGet);
+                    }),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
 
             if (Tag == 3)
             {
-                return Json(new Result(1, "ok", new
+                return new CustomsJsonResult
                 {
+                    Data = new Result(1, "ok", new
+                    {
 
-                    start = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd"),
-                    end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
+                        start = DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd"),
+                        end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
 
-                }), JsonRequestBehavior.AllowGet);
+                    }),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
 
             if (Tag == 4)
             {
-                return Json(new Result(1, "ok", new
+                return new CustomsJsonResult
                 {
+                    Data = new Result(1, "ok", new
+                    {
 
-                    start = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd"),
-                    end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
+                        start = DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd"),
+                        end = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")
 
-                }), JsonRequestBehavior.AllowGet);
+                    }),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
 
             return Content("");
@@ -249,22 +266,22 @@ namespace HttpReports.Web.Controllers
             {
                 if (TagValue == 1 && start == DateTime.Now.ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
                 {
-                    return Json(new Result(1, "ok", -1));
+                    return new CustomsJsonResult(new Result(1, "ok", -1));
                 }
 
                 if (TagValue == 2 && start == DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") && end == DateTime.Now.ToString("yyyy-MM-dd"))
                 {
-                    return Json(new Result(1, "ok", -1));
+                    return new CustomsJsonResult(new Result(1, "ok", -1));
                 }
 
                 if (TagValue == 3 && start == DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
                 {
-                    return Json(new Result(1, "ok", -1));
+                    return new CustomsJsonResult(new Result(1, "ok", -1));
                 }
 
                 if (TagValue == 4 && start == DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
                 {
-                    return Json(new Result(1, "ok", -1));
+                    return new CustomsJsonResult(new Result(1, "ok", -1));
                 }
             }
 
@@ -272,7 +289,7 @@ namespace HttpReports.Web.Controllers
             {
                 result = new Result(1, "ok", 1);
 
-                return Json(result);
+                return new CustomsJsonResult(result);
             }
 
 
@@ -280,43 +297,43 @@ namespace HttpReports.Web.Controllers
             {
                 result = new Result(1, "ok", 1);
 
-                return Json(result);
+                return new CustomsJsonResult(result);
             }
 
             if (start == DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd") && end == DateTime.Now.ToString("yyyy-MM-dd"))
             {
                 result = new Result(1, "ok", 2);
-                return Json(result);
+                return new CustomsJsonResult(result);
             }
 
             if (start == DateTime.Now.AddDays(-(int)DateTime.Now.DayOfWeek + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
             {
                 result = new Result(1, "ok", 3);
-                return Json(result);
+                return new CustomsJsonResult(result);
 
             }
 
             if (start == DateTime.Now.AddDays(-DateTime.Now.Day + 1).ToString("yyyy-MM-dd") && end == DateTime.Now.AddDays(1).ToString("yyyy-MM-dd"))
             {
                 result = new Result(1, "ok", 4);
-                return Json(result);
+                return new CustomsJsonResult(result);
             }
 
 
-            return Json(result);
+            return new CustomsJsonResult(result);
         }
         public ActionResult GetNodes()
         {
             var nodes = _dataService.GetNodes();
 
-            return Json(new Result(1, "ok", nodes));
+            return new CustomsJsonResult(new Result(1, "ok", nodes));
         }
 
         public ActionResult GetIndexData(GetIndexDataRequest request)
         {
             var result = _dataService.GetIndexData(request);
 
-            return Json(new Result(1, "ok", result));
+            return new CustomsJsonResult(new Result(1, "ok", result));
         }
 
         public ActionResult GetTopRequest(GetTopRequest request)
@@ -343,7 +360,7 @@ namespace HttpReports.Web.Controllers
                 TOP = request.TOP
             });
 
-            return Json(new Result(1, "ok", new { most, least }));
+            return new CustomsJsonResult(new Result(1, "ok", new { most, least }));
         }
 
         public ActionResult GetTopCode500(GetTopRequest request)
@@ -360,7 +377,7 @@ namespace HttpReports.Web.Controllers
                 TOP = request.TOP
             });
 
-            return Json(new Result(1, "ok", data));
+            return new CustomsJsonResult(new Result(1, "ok", data));
 
         }
 
@@ -388,7 +405,7 @@ namespace HttpReports.Web.Controllers
             });
 
 
-            return Json(new Result(1, "ok", new { fast, slow }));
+            return new CustomsJsonResult(new Result(1, "ok", new { fast, slow }));
         }
 
         public ActionResult GetJob(int Id)
@@ -419,7 +436,7 @@ namespace HttpReports.Web.Controllers
 
             };
 
-            return Json(new Result(1, "ok", request));
+            return new CustomsJsonResult(new Result(1, "ok", request));
         }
 
 
@@ -437,7 +454,7 @@ namespace HttpReports.Web.Controllers
 
             var list = _dataService.GetRequestList(request, out totalCount);
 
-            return Json(new { total = totalCount, rows = list }, JsonRequestBehavior.AllowGet);
+            return new CustomsJsonResult(new { total = totalCount, rows = list }, JsonRequestBehavior.AllowGet);
 
         }
 
@@ -445,7 +462,7 @@ namespace HttpReports.Web.Controllers
         {
             var vaild = _dataService.VaildJob(request);
 
-            if (vaild.code != 1) return Json(vaild);
+            if (vaild.code != 1) return new CustomsJsonResult(vaild);
 
             var job = _dataService.ParseJobRequest(request);
 
@@ -461,7 +478,7 @@ namespace HttpReports.Web.Controllers
 
             }
 
-            return Json(new Result(1, "ok"));
+            return new CustomsJsonResult(new Result(1, "ok"));
         }
 
         public ActionResult ChangeJobState(int Id)
@@ -470,14 +487,14 @@ namespace HttpReports.Web.Controllers
 
             if (job == null)
             {
-                return Json(new Result(1, "ok"));
+                return new CustomsJsonResult(new Result(1, "ok"));
             }
 
             job.Status = job.Status == 1 ? 0 : 1;
 
             _dataService.UpdateJob(job);
 
-            return Json(new Result(1, "ok"));
+            return new CustomsJsonResult(new Result(1, "ok"));
         }
 
         public ActionResult DeleteJob(int Id)
@@ -486,12 +503,12 @@ namespace HttpReports.Web.Controllers
 
             if (job == null)
             {
-                return Json(new Result(1, "ok"));
+                return new CustomsJsonResult(new Result(1, "ok"));
             }
 
             _dataService.DeleteJob(job);
 
-            return Json(new Result(1, "ok"));
+            return new CustomsJsonResult(new Result(1, "ok"));
 
         }
 

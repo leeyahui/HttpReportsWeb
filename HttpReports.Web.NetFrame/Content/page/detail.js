@@ -59,60 +59,61 @@ function InitTable() {
         },
         columns: [
             {
-                field: 'Id',
+                field: 'id',
                 title: '编号',
                 align: 'center'
             },
             {
-                field: 'Node',
+                field: 'node',
                 title: '服务节点',
                 align: 'center'
             },
             {
-                field: 'Route',
+                field: 'route',
                 title: '路径',
                 align: 'center'
 
             },
             {
-                field: 'Url',
+                field: 'url',
                 title: '请求地址',
                 align: 'center'
 
             },
             {
-                field: 'Method',
+                field: 'method',
                 title: '请求方法',
                 align: 'center'
 
             },
             {
-                field: 'Milliseconds',
+                field: 'milliseconds',
                 title: '处理时间',
                 align: 'center'
 
             },
             {
-                field: 'StatusCode',
+                field: 'statusCode',
                 title: '状态码',
                 align: 'center'
 
             },
             {
-                field: 'IP',
+                field: 'ip',
                 title: 'IP地址',
                 align: 'center'
 
             },
 
             {
-                field: 'CreateTime',
+                field: 'createTime',
                 title: '请求时间',
                 align: 'center',
-                //formatter: function (value, row, index) {
-                //    value = value.replace('T', ' '); 
-                //    return value;
-                //}
+                formatter: function (value, row, index) {
+
+                    value = value.replace('T', ' '); 
+                    return value;
+                }
             }
         ]
     });

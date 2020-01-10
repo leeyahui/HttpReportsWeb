@@ -1,5 +1,6 @@
 ﻿using HttpReports.Web.Implements;
 using HttpReports.Web.Models;
+using HttpReports.Web.NetFrame.Implements;
 using System.Web.Mvc;
 
 namespace HttpReports.Web.Controllers
@@ -26,17 +27,17 @@ namespace HttpReports.Web.Controllers
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
             {
-                return Json(new Result(-1, "账号或密码错误"));
+                return new CustomsJsonResult(new Result(-1, "账号或密码错误"));
             }
 
             if (_config.UserName == username && _config.Password == password)
             {
                 HttpContext.SetCookie("login_info", username, 60 * 30 * 10);
 
-                return Json(new Result(1, "登录成功"));
+                return new CustomsJsonResult(new Result(1, "登录成功"));
             }
 
-            return Json(new Result(-1, "账号或密码错误"));
+            return new CustomsJsonResult(new Result(-1, "账号或密码错误"));
         }
 
         public ActionResult Logout()
